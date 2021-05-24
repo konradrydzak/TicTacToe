@@ -3,6 +3,7 @@ Playable TicTacToe game with user input and minimax computer algorithm that alwa
 
 # Screenshots
 ![Initial_input.png](docs/Initial_input.png "Example initial input to start the game")
+
 ![Finished_game.png](docs/Finished_game.png "Example of a finished game")
 
 # Skills used

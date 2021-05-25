@@ -16,15 +16,15 @@ class ComputerAI:
         """
         Computer move structure
         """
-        self.board.make_a_move(self.computer, self.find_a_move())
+        self.board.make_a_move(player=self.computer, position=self.find_a_move())
 
     def find_a_move(self):
         """
         Tries to find a move for the computer, first tries to win in one move, then goes to minimax algorithm
         """
-        possible_win, position = self.check_if_win_in_one(self.computer)
+        possible_win, position = self.check_if_win_in_one(current_player=self.computer)
         if not possible_win:
-            possible_win, position = self.check_if_win_in_one(self.player)
+            possible_win, position = self.check_if_win_in_one(current_player=self.player)
             if not possible_win:
                 position = self.best_move()
         return position
@@ -36,10 +36,10 @@ class ComputerAI:
         position = 0
         for i in range(1, 10):
             if self.board.board[str(i)] not in 'XO':
-                self.board.make_a_move(current_player, str(i))
+                self.board.make_a_move(player=current_player, position=str(i))
                 if self.board.check_if_win():
                     position = i
-                self.board.make_a_move(str(i), str(i))
+                self.board.make_a_move(player=str(i), position=str(i))
         if position != 0:
             return True, str(position)
         else:
@@ -52,10 +52,10 @@ class ComputerAI:
         best_score = -9999999
         depth = 9
         for i in range(1, 10):
-            if self.board.check_if_move_is_possible(str(i)):
-                self.board.make_a_move(self.computer, str(i))
+            if self.board.check_if_move_is_possible(position=str(i)):
+                self.board.make_a_move(player=self.computer, position=str(i))
                 score = self.minimax(False, depth)
-                self.board.make_a_move(str(i), str(i))
+                self.board.make_a_move(player=str(i), position=str(i))
                 if score > best_score:
                     best_score = score
                     position = str(i)
@@ -82,10 +82,10 @@ class ComputerAI:
             best_score = -9999999
             self.turn = self.computer
             for i in range(1, 10):
-                if self.board.check_if_move_is_possible(str(i)):
-                    self.board.make_a_move(self.computer, str(i))
-                    score = self.minimax(False, depth + 1)
-                    self.board.make_a_move(str(i), str(i))
+                if self.board.check_if_move_is_possible(position=str(i)):
+                    self.board.make_a_move(player=self.computer, position=str(i))
+                    score = self.minimax(is_maximizing=False, depth=depth + 1)
+                    self.board.make_a_move(player=str(i), position=str(i))
                     best_score = max(score, best_score)
             self.turn = self.player
             return best_score
@@ -93,10 +93,10 @@ class ComputerAI:
             best_score = 9999999
             self.turn = self.player
             for i in range(1, 10):
-                if self.board.check_if_move_is_possible(str(i)):
-                    self.board.make_a_move(self.player, str(i))
-                    score = self.minimax(True, depth + 1)
-                    self.board.make_a_move(str(i), str(i))
+                if self.board.check_if_move_is_possible(position=str(i)):
+                    self.board.make_a_move(player=self.player, position=str(i))
+                    score = self.minimax(is_maximizing=True, depth=depth + 1)
+                    self.board.make_a_move(player=str(i), position=str(i))
                     best_score = min(score, best_score)
             self.turn = self.computer
             return best_score

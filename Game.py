@@ -14,7 +14,8 @@ class Game:
         self.player = player_symbol
         self.computer = computer_symbol
         self.board = Board.Board()
-        self.computer_AI = ComputerAI.ComputerAI(self.board, self.turn, self.player, self.computer)
+        self.computer_AI = ComputerAI.ComputerAI(board=self.board, who_is_first=self.turn, player_symbol=self.player,
+                                                 computer_symbol=self.computer)
 
     def start_game(self):
         """
@@ -32,7 +33,8 @@ class Game:
             self.turn = self.player
         else:
             self.turn = self.computer
-        self.computer_AI = ComputerAI.ComputerAI(self.board, self.turn, self.player, self.computer)
+        self.computer_AI = ComputerAI.ComputerAI(board=self.board, who_is_first=self.turn, player_symbol=self.player,
+                                                 computer_symbol=self.computer)
         self.turn_structure()
 
     def turn_structure(self):
@@ -54,9 +56,9 @@ class Game:
         """
         while True:
             position = str(input('Select a place to make a move: '))
-            if self.board.check_if_move_is_possible(position):
+            if self.board.check_if_move_is_possible(position=position):
                 break
-        self.board.make_a_move(self.player, position)
+        self.board.make_a_move(player=self.player, position=position)
 
     def change_turn(self):
         """

@@ -42,8 +42,7 @@ class ComputerAI:
                 self.board.make_a_move(player=str(i), position=str(i))
         if position != 0:
             return True, str(position)
-        else:
-            return False, None
+        return False, None
 
     def best_move(self):
         """
@@ -70,14 +69,12 @@ class ComputerAI:
         if self.board.check_if_win():
             if self.turn == self.player:
                 return -1 * depth
-            else:
-                return 1 * depth
-        else:
-            for i in range(1, 10):
-                if self.board.board[str(i)] not in 'XO':
-                    break
-                if i == 9:
-                    return 0
+            return 1 * depth
+        for i in range(1, 10):
+            if self.board.board[str(i)] not in 'XO':
+                break
+            if i == 9:
+                return 0
         if is_maximizing:
             best_score = -9999999
             self.turn = self.computer

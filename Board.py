@@ -48,3 +48,4 @@ class Board:
                 or (self.board['1'] == self.board['5'] and self.board['1'] == self.board['9'])
                 or (self.board['3'] == self.board['5'] and self.board['3'] == self.board['7'])):
             return True
+        return False

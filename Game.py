@@ -1,6 +1,56 @@
 import Board
 import ComputerAI
 
+import pygame
+from pygame.locals import *
+
+# TODO Add visual representation of the state of the game
+
+width = 550
+height = 550
+
+
+def initializing_window():
+    pygame.init()
+
+    window = pygame.display.set_mode((width, height))
+    pygame.display.set_caption('TicTacToe')
+
+    # White background
+    window.fill((255, 255, 255))
+
+    # Draw TicTacToe grid
+    pygame.draw.line(window, (0, 0, 0), (width / 3, 0), (width / 3, height), 5)
+    pygame.draw.line(window, (0, 0, 0), (2 * width / 3, 0), (2 * width / 3, height), 5)
+    pygame.draw.line(window, (0, 0, 0), (0, height / 3), (width, height / 3), 5)
+    pygame.draw.line(window, (0, 0, 0), (0, 2 * height / 3), (width, 2 * height / 3), 5)
+
+    pygame.display.update()
+
+
+def user_click():
+    # get coordinates of mouse click
+    x, y = pygame.mouse.get_pos()
+
+    # get column of mouse click (1-3)
+    if x < width / 3:
+        col = 1
+    elif x < width / 3 * 2:
+        col = 2
+    elif x < width:
+        col = 3
+
+    # get row of mouse click (1-3)
+    if y < height / 3:
+        row = 3
+    elif y < height / 3 * 2:
+        row = 2
+    elif y < height:
+        row = 1
+
+    position = col + (row - 1) * 3
+    return position
+
 
 class Game:
     def __init__(self, who_is_first='X', player_symbol='O', computer_symbol='X'):
@@ -41,23 +91,39 @@ class Game:
         """
         Structures the game
         """
+        initializing_window()
         while True:
-            if self.turn == self.player:
-                self.board.print_board()
-                self.player_turn()
-            else:
+            run = True
+            if self.turn == self.computer:
                 self.computer_AI.computer_turn()
-            self.endgame_check()
-            self.change_turn()
+                self.board.print_board()
+                self.endgame_check()
+                self.change_turn()
+            else:
+                self.board.print_board()
 
-    def player_turn(self):
+            while run:
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        run = False
+                        pygame.quit()
+                    elif event.type == MOUSEBUTTONDOWN:
+                        if self.turn == self.player:
+                            position = str(user_click())
+                            if self.board.check_if_move_is_possible(position=position):
+                                self.player_turn(position)
+                                self.board.print_board()
+                                self.endgame_check()
+                                self.change_turn()
+                                self.computer_AI.computer_turn()
+                                self.board.print_board()
+                                self.endgame_check()
+                                self.change_turn()
+
+    def player_turn(self, position):
         """
-        A player turn structure
+        A player making a turn
         """
-        while True:
-            position = str(input('Select a place to make a move: '))
-            if self.board.check_if_move_is_possible(position=position):
-                break
         self.board.make_a_move(player=self.player, position=position)
 
     def change_turn(self):

@@ -1,6 +1,11 @@
 # TicTacToe
 Playable TicTacToe game with user input and minimax computer algorithm that always wins or at least draws the game. 
 
+## Setup
+
+1. Run command: *pip install -r requirements.txt*
+2. Run program at: *src/TicTacToe.py*
+
 ## Screenshots
 ![Do_you_want_to_start.png](docs/Example_1.png "Starting window")
 
